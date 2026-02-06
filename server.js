@@ -3,10 +3,9 @@ import { Server } from "socket.io";
 import next from "next";
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
 const port = process.env.PORT || 3000;
 
-const app = next({ dev, hostname, port });
+const app = next({ dev });
 const handler = app.getRequestHandler();
 
 const userSockets = {};
@@ -39,14 +38,14 @@ app.prepare().then(() => {
     });
 
     //Event to Show the StartConversation in ChatList
-    socket.on("conversation:start", ({conversation, startedBy}) => {
-      console.log('Conversation:', conversation)
+    socket.on("conversation:start", ({ conversation, startedBy }) => {
+      console.log("Conversation:", conversation);
       console.log("Conversation started by:", startedBy);
-      
+
       const userASocketId = userSockets[startedBy];
       if (userASocketId) {
         console.log("User found, message emitted");
-        
+
         io.to(userASocketId).emit("conversation:started", conversation);
       }
     });
