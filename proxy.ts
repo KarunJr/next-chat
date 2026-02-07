@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { publicRoutes, apiHandlers, apiAuthPrefix } from "./routes";
 
 export async function proxy(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  const isProduction = process.env.NODE_ENV === "production"
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET, secureCookie: isProduction });
+  console.log("Raw Cookie Header:", req.headers.get("cookie"));
+  console.log("All Cookie Names:", req.cookies.getAll().map(c => c.name));
   console.log("Token is: ", token);
   const { nextUrl } = req;
   const isLoggedIn = !!token;
