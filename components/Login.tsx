@@ -3,8 +3,13 @@ import Image from "next/image";
 import LoginUI from "@/public/login-ui.jpg";
 import { GoogleSvg } from "@/public/google";
 import { signIn } from "next-auth/react";
+import getUserFromClient from "@/hooks/get-user-client";
 
 export default function Login() {
+  console.log("Hello from client!");
+  const session = getUserFromClient();
+  console.log("Session from Client: ", session.session?.user.email);
+  
   return (
     <div className="flex h-full">
       <div className="w-full mx-auto xl:w-1/2 p-2 bg-neutral-900 text-white flex items-center justify-center h-full">
