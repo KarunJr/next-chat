@@ -9,7 +9,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        (token.name = user.name), (token.id = user.id);
+        ((token.name = user.name), (token.id = user.id));
         token.image = user.image;
       }
       return token;
@@ -28,4 +28,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  trustHost: true,
 });

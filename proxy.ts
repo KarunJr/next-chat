@@ -4,6 +4,7 @@ import { publicRoutes, apiHandlers, apiAuthPrefix } from "./routes";
 
 export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  console.log("Token is: ", token);
   const { nextUrl } = req;
   const isLoggedIn = !!token;
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
