@@ -9,7 +9,7 @@ export async function proxy(req: NextRequest) {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isApiHandler = nextUrl.pathname.startsWith(apiHandlers);
-
+  console.log("Next URL is: ", nextUrl)
   if (isApiHandler) {
     return NextResponse.next();
   }
