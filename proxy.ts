@@ -9,7 +9,7 @@ export async function proxy(req: NextRequest) {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isApiHandler = nextUrl.pathname.startsWith(apiHandlers);
-  console.log("Next URL is: ", nextUrl)
+  console.log("Next URL is: ", nextUrl);
   if (isApiHandler) {
     return NextResponse.next();
   }
@@ -18,12 +18,16 @@ export async function proxy(req: NextRequest) {
   }
 
   if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/chat", process.env.NEXTAUTH_URL));
+    console.log("I am runnig isLoggedIn");
+    console.log("NextAUTH_URL: ", process.env.NEXTAUTH_URL);
+    return NextResponse.redirect(new URL("/chat", req.nextUrl));
     // return NextResponse.redirect(new URL("/chat", nextUrl));
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/", process.env.NEXTAUTH_URL));
+    console.log("I am runnig !isLoggedIn");
+    console.log("NextAUTH_URL: ", process.env.NEXTAUTH_URL);
+    return NextResponse.redirect(new URL("/", req.nextUrl));
     // return NextResponse.redirect(new URL("/", nextUrl));
   }
   return NextResponse.next();
