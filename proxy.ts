@@ -18,11 +18,13 @@ export async function proxy(req: NextRequest) {
   }
 
   if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/chat", nextUrl));
+    return NextResponse.redirect(new URL("/chat", process.env.NEXTAUTH_URL));
+    // return NextResponse.redirect(new URL("/chat", nextUrl));
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/", nextUrl));
+    return NextResponse.redirect(new URL("/", process.env.NEXTAUTH_URL));
+    // return NextResponse.redirect(new URL("/", nextUrl));
   }
   return NextResponse.next();
 }
