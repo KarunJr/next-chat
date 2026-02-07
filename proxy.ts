@@ -5,9 +5,6 @@ import { publicRoutes, apiHandlers, apiAuthPrefix } from "./routes";
 export async function proxy(req: NextRequest) {
   const isProduction = process.env.NODE_ENV === "production"
   const token = await getToken({ req, secret: process.env.AUTH_SECRET, secureCookie: isProduction });
-  console.log("Raw Cookie Header:", req.headers.get("cookie"));
-  console.log("All Cookie Names:", req.cookies.getAll().map(c => c.name));
-  console.log("Token is: ", token);
   const { nextUrl } = req;
   const isLoggedIn = !!token;
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -25,14 +22,12 @@ export async function proxy(req: NextRequest) {
     console.log("I am runnig isLoggedIn");
     console.log("NextAUTH_URL: ", process.env.NEXTAUTH_URL);
     return NextResponse.redirect(new URL("/chat", req.nextUrl));
-    // return NextResponse.redirect(new URL("/chat", nextUrl));
   }
 
   if (!isLoggedIn && !isPublicRoute) {
     console.log("I am runnig !isLoggedIn");
     console.log("NextAUTH_URL: ", process.env.NEXTAUTH_URL);
     return NextResponse.redirect(new URL("/", req.nextUrl));
-    // return NextResponse.redirect(new URL("/", nextUrl));
   }
   return NextResponse.next();
 }
